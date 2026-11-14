@@ -1,0 +1,19 @@
+<h2>{{ title }}</h2>
+<button (click)="rename()">Renommer</button>
+<button [disabled]="!canDelete" (click)="delete()">Supprimer</button>
+
+<hr>
+
+<button (click)="clearTasks()">Vider la liste</button>
+
+@if (tasks.length === 0) {
+  <p class="empty">Aucune tâche pour l'instant</p>
+} @else {
+  <ul>
+    @for (task of tasks; track task.id) {
+      <li>
+        {{ task.title | uppercase }} - {{ task.dueDate | date:'dd/MM/yyyy' }}
+      </li>
+    }
+  </ul>
+}
