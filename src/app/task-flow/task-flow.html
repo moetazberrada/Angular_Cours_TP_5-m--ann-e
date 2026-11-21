@@ -1,18 +1,51 @@
+
 <h2>{{ title }}</h2>
+
 <button (click)="rename()">Renommer</button>
-<button [disabled]="!canDelete" (click)="delete()">Supprimer</button>
+
+<button [disabled]="!canDelete" (click)="delete()">
+  Supprimer
+</button>
 
 <hr>
 
+<input
+  type="text"
+  placeholder="Écrire une tâche..."
+  [(ngModel)]="newTaskTitle"
+/>
+
+<button (click)="addTask()">Ajouter une tâche</button>
+
+<hr>
+
+<p>Nombre total : {{ tasks().length }}</p>
+
+<p>Nombre de tâches terminées : {{ tasksDoneCount() }}</p>
+
+<p>Nombre de tâches non terminées : {{ tasksNotDoneCount() }}</p>
+
 <button (click)="clearTasks()">Vider la liste</button>
 
-@if (tasks.length === 0) {
+@if (tasks().length === 0) {
   <p class="empty">Aucune tâche pour l'instant</p>
 } @else {
   <ul>
-    @for (task of tasks; track task.id) {
+    @for (task of tasks(); track task.id) {
       <li>
-        {{ task.title | uppercase }} - {{ task.dueDate | date:'dd/MM/yyyy' }}
+        <input
+          type="checkbox"
+          [checked]="task.done"
+          (change)="toggleTask(task.id)"
+        />
+
+        <span [class.completed]="task.done">
+          {{ task.title | uppercase }}
+        </span>
+
+        - {{ task.dueDate | date:'dd/MM/yyyy' }}
+
+        - {{ task.done ? 'Terminée' : 'En cours' }}
       </li>
     }
   </ul>
